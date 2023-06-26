@@ -1,12 +1,17 @@
 import ContactList from './ContackList/ContactList'
 import ContactForm from './ContactForm/ContactForm'
 import Filter from './Filter/Filter'
-import { addContact, deleteContact, filterContact, visibleContacts, getLocalContacts } from 'redux/contactsSlise';
+import { addContact, deleteContact, filterContact} from 'redux/phoneBookSlise';
 import { useDispatch, useSelector } from 'react-redux';
 
-export default function App() {
+const App = () => {
   const dispatch = useDispatch()
-  const localContacts = useSelector(getLocalContacts)
+  const filter = ''
+  const contacts = useSelector(state => state.contacts.contacts)
+
+  const visibleContacts = () => {
+    return contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()));
+  }
 
   return (
     <div
@@ -19,10 +24,12 @@ export default function App() {
       }}
     >
       <h1>Phonebook</h1>
-      <ContactForm onSubmitForm={() => dispatch(addContact())}/>
+      <ContactForm onSubmitForm={(data) => dispatch(addContact(data))}/>
       <h2>Contacts</h2>
-      <Filter  onChange={() => dispatch(filterContact())}/>
-      <ContactList contacts={localContacts ?? (() => dispatch(visibleContacts()))} 
-      onDeleteContact={() => dispatch(deleteContact())}/>
+      <Filter  value={filter} onChange={() => dispatch(filterContact())}/>
+      <ContactList contacts={visibleContacts()} 
+      onDeleteContact={(contactId) => dispatch(deleteContact(contactId))}/>
     </div>
   )};
+
+  export default App
