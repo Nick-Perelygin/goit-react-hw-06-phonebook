@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const App = () => {
   const dispatch = useDispatch()
-  const filter = ''
+  const filter = useSelector(state => state.contacts.filter)
   const contacts = useSelector(state => state.contacts.contacts)
 
   const visibleContacts = () => {
@@ -26,7 +26,7 @@ const App = () => {
       <h1>Phonebook</h1>
       <ContactForm onSubmitForm={(data) => dispatch(addContact(data))}/>
       <h2>Contacts</h2>
-      <Filter  value={filter} onChange={() => dispatch(filterContact())}/>
+      <Filter  value={filter} onChange={(e) => dispatch(filterContact(e))}/>
       <ContactList contacts={visibleContacts()} 
       onDeleteContact={(contactId) => dispatch(deleteContact(contactId))}/>
     </div>
