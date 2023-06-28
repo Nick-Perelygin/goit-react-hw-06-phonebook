@@ -1,7 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit'
 import storage from 'redux-persist/lib/storage'
 import { persistReducer } from 'redux-persist'
-import { nanoid } from 'nanoid';
 
 const contactsBase = [ 
     {id: 'id-1', name: 'Rozie Simpson', number: '459-12-56'},
@@ -18,19 +17,7 @@ const phoneBookSlice = createSlice({
     },
     reducers: {
         addContact(state, action) {          
-            const contact = {
-                id: nanoid(),
-                name: action.payload.name,
-                number: action.payload.number,
-            };
-            const filterResult = state.contacts.find(prevContact =>
-                prevContact.name.toLowerCase().trim() ===
-                contact.name.toLowerCase().trim() ||
-                prevContact.number.trim() === contact.number.trim()
-            )
-            if(filterResult)
-                alert(`${contact.name}: is already in contacts`)
-            else state.contacts = [contact, ...state.contacts]
+           state.contacts = [action.payload, ...state.contacts]
         },
         deleteContact(state, action) {
             state.contacts = state.contacts.filter(contact => contact.id !== action.payload)
